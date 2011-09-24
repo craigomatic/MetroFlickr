@@ -1,0 +1,291 @@
+﻿<UserControl x:Class="MetroFlickr.ImageDetailPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="768" d:DesignWidth="1366" Loaded="Page_Loaded" Unloaded="Page_Unloaded">
+
+  <UserControl.Resources>
+    <!--
+      Page-Specific Resources
+    -->
+
+    <CollectionViewSource x:Name="CollectionViewSource" x:Key="CollectionViewSource" />
+
+    <Style x:Key="DetailContentStackPanelStyle" TargetType="StackPanel">
+      <Setter Property="HorizontalAlignment" Value="Left"/>
+      <Setter Property="VerticalAlignment" Value="Top"/>
+      <Setter Property="Orientation" Value="Horizontal"/>
+    </Style>
+
+    <Style x:Key="SnapDetailContentStackPanelStyle" TargetType="StackPanel">
+      <Setter Property="HorizontalAlignment" Value="Left"/>
+      <Setter Property="Width" Value="296"/>
+      <Setter Property="VerticalAlignment" Value="Top"/>
+      <Setter Property="Margin" Value="12,0,12,0"/>
+      <Setter Property="Orientation" Value="Vertical"/>
+    </Style>
+
+    <Style x:Key="PortraitDetailContentStackPanelStyle" TargetType="StackPanel">
+      <Setter Property="HorizontalAlignment" Value="Left"/>
+      <Setter Property="MinWidth" Value="616"/>
+      <Setter Property="VerticalAlignment" Value="Top"/>
+      <Setter Property="Margin" Value="12,0,12,0"/>
+      <Setter Property="Orientation" Value="Vertical"/>
+    </Style>
+
+    <Style x:Key="PrimaryContentPanelStyle" TargetType="StackPanel">
+      <Setter Property="HorizontalAlignment" Value="Left"/>
+      <Setter Property="Height" Value="712"/>
+      <Setter Property="Width" Value="490"/>
+      <Setter Property="VerticalAlignment" Value="Top"/>
+      <Setter Property="Margin" Value="132,0,0,0"/>
+      <Setter Property="Orientation" Value="Vertical"/>
+    </Style>
+
+    <Style x:Key="SecondaryContentPanelStyle" TargetType="StackPanel">
+      <Setter Property="HorizontalAlignment" Value="Left"/>
+      <Setter Property="Height" Value="714"/>
+      <Setter Property="Width" Value="490"/>
+      <Setter Property="VerticalAlignment" Value="Top"/>
+      <Setter Property="Margin" Value="80,0,0,0"/>
+      <Setter Property="Orientation" Value="Vertical"/>
+    </Style>
+
+    <Style x:Key="SnapContentPanelStyle" TargetType="StackPanel">
+      <Setter Property="HorizontalAlignment" Value="Left"/>
+      <Setter Property="Height" Value="Auto"/>
+      <Setter Property="Width" Value="280"/>
+      <Setter Property="VerticalAlignment" Value="Top"/>
+      <Setter Property="Margin" Value="12,0,12,8"/>
+      <Setter Property="Orientation" Value="Vertical"/>
+    </Style>
+
+    <Style x:Key="PortraitContentPanelStyle" TargetType="StackPanel">
+      <Setter Property="HorizontalAlignment" Value="Left"/>
+      <Setter Property="Height" Value="Auto"/>
+      <Setter Property="Width" Value="Auto"/>
+      <Setter Property="VerticalAlignment" Value="Top"/>
+      <Setter Property="Margin" Value="132,0,0,8"/>
+      <Setter Property="Orientation" Value="Vertical"/>
+    </Style>
+
+    <!--Temporary: placeholders for shared command button visuals and finalized icons -->
+    <!--AppBar Button Styles-->
+
+    <Style x:Key="AppBarButtonStyle" TargetType="Button">
+      <Setter Property="MinWidth" Value="40" />
+      <Setter Property="Width" Value="40" />
+      <Setter Property="Height" Value="40" />
+      <Setter Property="HorizontalAlignment" Value="Center" />
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="Button">
+            <Grid x:Name="AppButton">
+              <VisualStateManager.VisualStateGroups>
+                <VisualStateGroup x:Name="CommonStates">
+                  <VisualState x:Name="Normal"/>
+                  <VisualState x:Name="MouseOver">
+                    <Storyboard>
+                      <DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="MouseOverEllipse" />
+                    </Storyboard>
+                  </VisualState>
+                  <VisualState x:Name="Pressed">
+                    <Storyboard>
+                      <DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="PressedEllipse" />
+                    </Storyboard>
+                  </VisualState>
+                  <VisualState x:Name="Disabled">
+                    <Storyboard>
+                      <DoubleAnimation Duration="0" To="0.35" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="AppButton" />
+                    </Storyboard>
+                  </VisualState>
+                </VisualStateGroup>
+              </VisualStateManager.VisualStateGroups>
+              <Ellipse x:Name="PressedEllipse" Fill="{StaticResource HighlightBrush}" Opacity="0" Width="40" Height="40"/>
+              <Ellipse x:Name="MouseOverEllipse" Fill="#7F8D8D8D" Opacity="0" Width="40" Height="40"/>
+              <ContentPresenter Width="40" Height="40"/>
+              <Path Data="F1M20.2168,40C31.2608,40,40.2168,31.045,40.2168,20C40.2168,8.958,31.2608,0,20.2168,0C9.1708,0,0.216799999999999,8.958,0.216799999999999,20C0.216799999999999,31.045,9.1708,40,20.2168,40 M20.2168,37.161C10.7548,37.161,3.0578,29.462,3.0578,20C3.0578,10.538,10.7548,2.839,20.2168,2.839C29.6788,2.839,37.3758,10.538,37.3758,20C37.3758,29.462,29.6788,37.161,20.2168,37.161" Fill="White" Height="40" Canvas.Left="0" Stretch="UniformToFill" Canvas.Top="0" Width="40"/>
+            </Grid>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+
+    <Style x:Key="AppBarTextStyle" TargetType="TextBlock">
+      <Setter Property="Foreground" Value="White"/>
+      <Setter Property="FontSize" Value="12"/>
+      <Setter Property="FontFamily" Value="Segoe UI"/>
+      <Setter Property="HorizontalAlignment" Value="Center"/>
+      <Setter Property="Margin" Value="0,7,0,0"/>
+    </Style>
+
+    <!-- FlipView Content Template -->
+
+    <ControlTemplate x:Key="FlipContentTemplate" TargetType="ContentControl">
+      <ScrollViewer x:Name="ScrollViewer" Style="{StaticResource HorizontalScrollViewStyle}" Grid.Row="1" >
+
+        <VisualStateManager.VisualStateGroups>
+          <VisualStateGroup x:Name="OrientationStates">
+            <VisualState x:Name="Full"/>
+            <VisualState x:Name="Fill" />
+            <VisualState x:Name="Portrait">
+              <Storyboard>
+                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Style" Storyboard.TargetName="ScrollViewer">
+                  <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource VerticalScrollViewStyle}"/>
+                </ObjectAnimationUsingKeyFrames>
+                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Style" Storyboard.TargetName="DetailContentStackPanel">
+                  <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PortraitDetailContentStackPanelStyle}"/>
+                </ObjectAnimationUsingKeyFrames>
+                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Style" Storyboard.TargetName="ContentPanel1">
+                  <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PortraitContentPanelStyle}"/>
+                </ObjectAnimationUsingKeyFrames>
+                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Style" Storyboard.TargetName="ContentPanel2">
+                  <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PortraitContentPanelStyle}"/>
+                </ObjectAnimationUsingKeyFrames>
+                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Style" Storyboard.TargetName="ContentPanel3">
+                  <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PortraitContentPanelStyle}"/>
+                </ObjectAnimationUsingKeyFrames>
+              </Storyboard>
+            </VisualState>
+            <VisualState x:Name="Snapped">
+              <Storyboard>
+                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Style" Storyboard.TargetName="ScrollViewer">
+                  <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource VerticalScrollViewStyle}"/>
+                </ObjectAnimationUsingKeyFrames>
+                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Style" Storyboard.TargetName="DetailContentStackPanel">
+                  <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource SnapDetailContentStackPanelStyle}"/>
+                </ObjectAnimationUsingKeyFrames>
+                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Width" Storyboard.TargetName="Image">
+                  <DiscreteObjectKeyFrame KeyTime="0" Value="280"/>
+                </ObjectAnimationUsingKeyFrames>
+                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Height" Storyboard.TargetName="Image">
+                  <DiscreteObjectKeyFrame KeyTime="0" Value="180"/>
+                </ObjectAnimationUsingKeyFrames>
+                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Style" Storyboard.TargetName="ContentPanel1">
+                  <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource SnapContentPanelStyle}"/>
+                </ObjectAnimationUsingKeyFrames>
+                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Style" Storyboard.TargetName="ContentPanel2">
+                  <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource SnapContentPanelStyle}"/>
+                </ObjectAnimationUsingKeyFrames>
+                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Style" Storyboard.TargetName="ContentPanel3">
+                  <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource SnapContentPanelStyle}"/>
+                </ObjectAnimationUsingKeyFrames>
+              </Storyboard>
+            </VisualState>
+          </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
+        <StackPanel x:Name="DetailContentStackPanel"  Style="{StaticResource DetailContentStackPanelStyle}" Grid.Row="1" >
+          <!-- Temporary: Move to Linked Text Container when available. -->
+          <StackPanel x:Name="ContentPanel1" Style="{StaticResource PrimaryContentPanelStyle}">
+            <TextBlock x:Name="DetailTitle" Height="74" Style="{StaticResource LargeContentFontStyle}" Text="{Binding Subtitle}"/>
+            <Grid x:Name="ImageGrid" Width="Auto" Margin="0,8,0,0" Background="#FF3B3B3B" HorizontalAlignment="Stretch"  VerticalAlignment="Top">
+              <Image x:Name="Image" Height="300" Margin="0" Stretch="UniformToFill" Source="{Binding Image}"/>
+            </Grid>
+            <TextBlock x:Name="DetailSubtitle" Style="{StaticResource SmallContentFontStyle}" Margin="0,8,0,0" Text="{Binding Category}" Foreground="#7FFFFFFF"/>
+            <TextBlock Text="{Binding Title}" Margin="0,3,0,0" Style="{StaticResource SmallContentFontStyle}"/>
+            <TextBlock Text="{Binding Content}" Margin="0,8,0,0" Style="{StaticResource SmallContentFontStyle}"/>
+          </StackPanel>
+          <StackPanel x:Name="ContentPanel2" Style="{StaticResource SecondaryContentPanelStyle}">
+            <TextBlock Text="{Binding Content}" Margin="0,8,0,0" Style="{StaticResource SmallContentFontStyle}"/>
+            <TextBlock Text="{Binding Category}" Margin="0,8,0,0" Style="{StaticResource SmallContentFontStyle}"/>
+            <TextBlock Text="{Binding Content}" Margin="0,8,0,0" Style="{StaticResource SmallContentFontStyle}"/>
+          </StackPanel>
+          <StackPanel x:Name="ContentPanel3" Style="{StaticResource SecondaryContentPanelStyle}">
+            <TextBlock Text="{Binding Content}" Margin="0,8,0,0" Style="{StaticResource SmallContentFontStyle}"/>
+            <TextBlock Text="{Binding Category}" Margin="0,8,0,0" Style="{StaticResource SmallContentFontStyle}"/>
+            <TextBlock Text="{Binding Content}" Margin="0,8,0,0" Style="{StaticResource SmallContentFontStyle}"/>
+          </StackPanel>
+          <!--Temporary: Disabled, but should eventually be used to reveal "related items" for the detail page-->
+          <!--<GridView x:Name="ItemGridView" Width="Auto" Height="Auto" Background="{StaticResource PageBackgroundBrush}" ItemTemplate="{StaticResource ListItemTemplate}" ItemContainerStyle="{StaticResource ListTileStyle}" ItemsPanel="{StaticResource GridItemsPanelTemplate}" BorderThickness="0" VerticalAlignment="Stretch"
+                Style="{StaticResource HorizontalScrollViewStyle}" />-->
+        </StackPanel>
+      </ScrollViewer>
+    </ControlTemplate>
+  </UserControl.Resources>
+
+  <!-- Page Content -->
+
+  <Grid x:Name="LayoutRoot" Style="{StaticResource LayoutRootGridStyle}">
+    <VisualStateManager.VisualStateGroups>
+      <VisualStateGroup x:Name="OrientationStates">
+        <VisualState x:Name="Full"/>
+        <VisualState x:Name="Fill"/>
+        <VisualState x:Name="Portrait"/>
+        <VisualState x:Name="Snapped">
+          <Storyboard>
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Style" Storyboard.TargetName="BackButton">
+              <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource SnapBackButtonStyle}"/>
+            </ObjectAnimationUsingKeyFrames>
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Style" Storyboard.TargetName="PageTitle">
+              <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource SnapPageTitleStyle}"/>
+            </ObjectAnimationUsingKeyFrames>
+          </Storyboard>
+        </VisualState>
+      </VisualStateGroup>
+    </VisualStateManager.VisualStateGroups>
+
+    <Grid.RowDefinitions>
+      <RowDefinition Height="140"/>
+      <RowDefinition Height="*"/>
+    </Grid.RowDefinitions>
+
+    <Grid>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="Auto" />
+        <ColumnDefinition Width="*" />
+      </Grid.ColumnDefinitions>
+      <Button x:Name="BackButton" Click="BackButton_Click" Style="{StaticResource BackButtonStyle}"/>
+      <TextBlock x:Name="PageTitle" Text="{Binding Title}" Style="{StaticResource PageTitleStyle}" Grid.Column="1" />
+    </Grid>
+    
+    <FlipView x:Name="FlipView" Background="{StaticResource PageBackgroundBrush}" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ItemsSource="{Binding Source={StaticResource CollectionViewSource}}" SelectionChanged="FlipView_SelectionChanged">
+
+      <!-- Temporary: Workaround for non-virtualizing panel used by default in FlipView -->
+      <FlipView.ItemsPanel>
+        <ItemsPanelTemplate>
+          <VirtualizingStackPanel ArePanningSnapPointsRegular="True" Background="Transparent" Orientation="Horizontal" VirtualizationMode="Recycling" />
+        </ItemsPanelTemplate>
+      </FlipView.ItemsPanel>
+
+      <FlipView.ItemTemplate>
+        <DataTemplate>
+          <!-- ContentControl used because it's conveniently templatable, and Visual State Manager used to
+               model view state applies only to template content -->
+          <ContentControl Loaded="Page_Loaded" Unloaded="Page_Unloaded" Template="{StaticResource FlipContentTemplate}"/>
+        </DataTemplate>
+      </FlipView.ItemTemplate>
+    </FlipView>
+
+    <ApplicationBar x:Name="ApplicationBar" VerticalAlignment="Bottom" Grid.Row="1" DismissMode="LightDismiss" TuckHeight="0">
+      <Grid Margin="0,0,0,18">
+        <StackPanel Orientation="Horizontal">
+          <StackPanel Margin="48,18,0,0" Width="72">
+            <Button x:Name="HomeButton" Click="HomeButton_Click" Style="{StaticResource AppBarButtonStyle}" />
+            <TextBlock Text="Home" Style="{StaticResource AppBarTextStyle}"/>
+          </StackPanel>
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,48,0">
+          <StackPanel Margin="24,18,0,0" VerticalAlignment="Center" Width="72">
+            <Button x:Name="PreviousButton" IsEnabled="{Binding CanFlipPrevious}" Click="PreviousButton_Click" Style="{StaticResource AppBarButtonStyle}">
+              <Path Fill="White" Stretch="UniformToFill" Canvas.Left="9.269" Canvas.Top="12.263" Width="20.928" Height="15.477" Data="F1M16.5576,18.0596L22.7016,12.2626L17.7046,12.2626L9.4856,20.0176L17.6686,27.7396L22.6646,27.7396L16.5576,21.9766L30.4136,21.9766L30.4136,18.0596z"/>
+            </Button>
+            <TextBlock Text="Previous" Style="{StaticResource AppBarTextStyle}"/>
+          </StackPanel>
+
+          <StackPanel x:Name="NextPanel" Margin="24,18,0,0" VerticalAlignment="Center" Width="72">
+            <Button x:Name="NextButton" IsEnabled="{Binding CanFlipNext}" Click="NextButton_Click" Style="{StaticResource AppBarButtonStyle}">
+              <Path Fill="White" Stretch="UniformToFill" Canvas.Left="9.269" Canvas.Top="12.263" Width="20.928" Height="15.477" Data="F1M23.4424,18.0596L17.2984,12.2626L22.2954,12.2626L30.5144,20.0176L22.3314,27.7396L17.3354,27.7396L23.4424,21.9766L9.5864,21.9766L9.5864,18.0596z"/>
+            </Button>
+            <TextBlock Text="Next" Style="{StaticResource AppBarTextStyle}"/>
+          </StackPanel>
+
+        </StackPanel>
+      </Grid>
+    </ApplicationBar>
+  </Grid>
+
+</UserControl>

@@ -1,0 +1,474 @@
+﻿<UserControl x:Class="MetroFlickr.FilePickerPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Loaded="Page_Loaded" Unloaded="Page_Unloaded"
+    mc:Ignorable="d"
+    d:DesignHeight="768" d:DesignWidth="1366">
+
+  <UserControl.Resources>
+    <!--
+      Temporary: Potentially Shared Resources
+      
+      These are local copies of resources that can (and almost certainly should)
+      be shared.  They are here to ensure that this page can be added as to an 
+      existing project, but may be deleted if they are duplicates.
+    -->
+    
+    <!-- TODO: Delete this line if the key AppName is declared in App.xaml -->
+    <x:String x:Key="AppName">My Application</x:String>
+    <SolidColorBrush x:Key="PageBackgroundBrush" Color="#FF0C0C0C"/>
+    <SolidColorBrush x:Key="PageForegroundBrush" Color="White"/>
+    <SolidColorBrush x:Key="HighlightBrush" Color="#FF26A0DA"/>
+
+    <!-- Common Control Resources -->
+
+    <!--These common resources should be included in generic.xaml for the default dark theme-->
+    <FontFamily x:Key="ContentFontFamily">Segoe UI</FontFamily>
+    <FontFamily x:Key="SemiBoldContentFontFamily">Segoe UI SemiBold</FontFamily>
+    <FontFamily x:Key="SemiLightContentFontFamily">Segoe UI Semilight</FontFamily>
+    <FontFamily x:Key="LightContentFontFamily">Segoe UI Light</FontFamily>
+
+    <x:Double x:Key="HeaderMediumFontSize">26.667</x:Double>
+    <x:Double x:Key="HeaderLargeFontSize">56</x:Double>
+    <x:Double x:Key="ContentFontSize">14.667</x:Double>
+    <x:Double x:Key="ContentSubHeaderFontSize">12</x:Double>
+
+    <Thickness x:Key="ControlBorderThickness">2</Thickness>
+    <CornerRadius x:Key="ControlBorderRadius">0</CornerRadius>
+    <SolidColorBrush x:Key="ControlTextColor" Color="White"/>
+    <SolidColorBrush x:Key="ControlHeaderColor" Color="#FFFFFFFF"/>
+
+    <SolidColorBrush x:Key="PlaceholderImageBrush" Color="Gray"/>
+    <SolidColorBrush x:Key="TileImageBrush" Color="#548D8D8D"/>
+
+    <!-- LayoutRoot Grid Style -->
+
+    <Style x:Key="LayoutRootGridStyle" TargetType="Grid">
+      <Setter Property="Background" Value="{StaticResource PageBackgroundBrush}"/>
+    </Style>
+
+    <!-- TextBlock Styles -->
+
+    <Style x:Key="DefaultFontStyle" TargetType="TextBlock">
+      <Setter Property="Foreground" Value="White"/>
+      <Setter Property="FontSize" Value="26.667"/>
+      <Setter Property="FontFamily" Value="Segoe UI"/>
+      <Setter Property="FontWeight" Value="Light"/>
+      <Setter Property="Margin" Value="0,0,0,0"/>
+      <Setter Property="TextTrimming" Value="WordEllipsis"/>
+      <Setter Property="TextWrapping" Value="Wrap"/>
+    </Style>
+
+    <Style x:Key="LargeContentFontStyle" TargetType="TextBlock" BasedOn="{StaticResource DefaultFontStyle}"/>
+
+    <Style x:Key="SmallContentFontStyle" TargetType="TextBlock" BasedOn="{StaticResource DefaultFontStyle}">
+      <Setter Property="FontSize" Value="14.667"/>
+    </Style>
+
+    <Style x:Key="ReadingFontStyle" TargetType="TextBlock" BasedOn="{StaticResource DefaultFontStyle}">
+      <Setter Property="FontFamily" Value="Calibri"/>
+      <Setter Property="FontSize" Value="14.667"/>
+    </Style>
+
+    <!-- Title Styles -->
+
+    <Style x:Key="BackButtonStyle" TargetType="Button">
+      <Setter Property="MinWidth" Value="40" />
+      <Setter Property="Width" Value="40" />
+      <Setter Property="Height" Value="40" />
+      <Setter Property="Margin" Value="40,0,40,40" />
+      <Setter Property="VerticalAlignment" Value="Bottom" />
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="Button">
+            <Canvas x:Name="BackButton">
+              <VisualStateManager.VisualStateGroups>
+                <VisualStateGroup x:Name="CommonStates">
+                  <VisualState x:Name="Normal"/>
+                  <VisualState x:Name="MouseOver">
+                    <Storyboard>
+                      <DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="MouseOverEllipse" />
+                    </Storyboard>
+                  </VisualState>
+                  <VisualState x:Name="Pressed">
+                    <Storyboard>
+                      <DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="PressedEllipse" />
+                    </Storyboard>
+                  </VisualState>
+                  <VisualState x:Name="Disabled">
+                    <Storyboard>
+                      <DoubleAnimation Duration="0" To="0.35" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="BackButton" />
+                    </Storyboard>
+                  </VisualState>
+                </VisualStateGroup>
+              </VisualStateManager.VisualStateGroups>
+              <Ellipse x:Name="PressedEllipse" Fill="{StaticResource HighlightBrush}" Opacity="0" Width="40" Height="40"/>
+              <Ellipse x:Name="MouseOverEllipse" Fill="#7F8D8D8D" Opacity="0" Width="40" Height="40"/>
+              <Path Fill="White" Data="F1M20.2168,40C31.2608,40,40.2168,31.045,40.2168,20C40.2168,8.958,31.2608,0,20.2168,0C9.1708,0,0.216799999999999,8.958,0.216799999999999,20C0.216799999999999,31.045,9.1708,40,20.2168,40 M20.2168,37.161C10.7548,37.161,3.0578,29.462,3.0578,20C3.0578,10.538,10.7548,2.839,20.2168,2.839C29.6788,2.839,37.3758,10.538,37.3758,20C37.3758,29.462,29.6788,37.161,20.2168,37.161"/>
+              <Path Fill="White" Canvas.Left="9.269" Canvas.Top="12.263" Height="15.477" Width="20.928" Stretch="UniformToFill" Data="F1M16.5576,18.0596L22.7016,12.2626L17.7046,12.2626L9.4856,20.0176L17.6686,27.7396L22.6646,27.7396L16.5576,21.9766L30.4136,21.9766L30.4136,18.0596z"/>
+            </Canvas>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+
+    <!-- Since the render transformation affects appearance but not layout, the snapped back button
+         still occupies a 40 pixel square despite displaying as 26 pixels square.  All margin values
+         are adjusted to account for the extra 7 pixel boundary. -->
+    <Style x:Key="SnapBackButtonStyle" TargetType="Button" BasedOn="{StaticResource BackButtonStyle}">
+      <Setter Property="Margin" Value="5,0,5,33" />
+      <Setter Property="RenderTransformOrigin" Value="0.5,0.5" />
+      <Setter Property="RenderTransform">
+        <Setter.Value>
+          <CompositeTransform ScaleX="0.65" ScaleY="0.65" />
+        </Setter.Value>
+      </Setter>
+    </Style>
+
+    <Style x:Key="PageTitleStyle" TargetType="TextBlock" BasedOn="{StaticResource DefaultFontStyle}">
+      <Setter Property="Margin" Value="0,0,40,28" />
+      <Setter Property="VerticalAlignment" Value="Bottom" />
+      <Setter Property="TextWrapping" Value="NoWrap"/>
+      <Setter Property="FontSize" Value="53.333"/>
+    </Style>
+
+    <Style x:Key="SnapPageTitleStyle" TargetType="TextBlock" BasedOn="{StaticResource PageTitleStyle}">
+      <Setter Property="Margin" Value="0,0,12,33" />
+      <Setter Property="FontSize" Value="26.667"/>
+    </Style>
+
+    <!-- Item Layout and Text Styles -->
+
+    <Style x:Key="ImagePlaceHolderStyle" TargetType="Border">
+      <Setter Property="Background" Value="{StaticResource PlaceholderImageBrush}"/>
+      <Setter Property="HorizontalAlignment" Value="Stretch"/>
+      <Setter Property="VerticalAlignment" Value="Stretch"/>
+    </Style>
+
+    <Style x:Key="ItemStackPanelStyle" TargetType="StackPanel">
+      <Setter Property="VerticalAlignment" Value="Top"/>
+      <Setter Property="Margin" Value="0,8,0,0"/>
+    </Style>
+
+    <Style x:Key="NonWrappingSmallContentTextStyle" TargetType="TextBlock">
+      <Setter Property="Foreground" Value="#FFFFFFFF"/>
+      <Setter Property="FontSize" Value="14.667"/>
+      <Setter Property="FontFamily" Value="{StaticResource ContentFontFamily}"/>
+      <Setter Property="HorizontalAlignment" Value="Left"/>
+      <Setter Property="VerticalAlignment" Value="Top"/>
+      <Setter Property="TextWrapping" Value="NoWrap"/>
+      <Setter Property="TextTrimming" Value="WordEllipsis"/>
+    </Style>
+
+    <Style x:Key="SmallContentTextStyle" TargetType="TextBlock">
+      <Setter Property="Foreground" Value="#FFFFFFFF"/>
+      <Setter Property="FontSize" Value="14.667"/>
+      <Setter Property="FontFamily" Value="{StaticResource ContentFontFamily}"/>
+      <Setter Property="HorizontalAlignment" Value="Left"/>
+      <Setter Property="VerticalAlignment" Value="Top"/>
+      <Setter Property="TextWrapping" Value="Wrap"/>
+      <Setter Property="TextTrimming" Value="WordEllipsis"/>
+    </Style>
+
+    <Style x:Key="OverlayStackPanelStyle" TargetType="StackPanel">
+      <Setter Property="VerticalAlignment" Value="Bottom"/>
+      <Setter Property="Margin" Value="0,8,0,0"/>
+      <Setter Property="Background" Value="#A5000000"/>
+    </Style>
+
+    <Style x:Key="SubHeaderTextStyle" TargetType="TextBlock">
+      <Setter Property="Foreground" Value="#FFFFFFFF"/>
+      <Setter Property="FontFamily" Value="{StaticResource ContentFontFamily}"/>
+      <Setter Property="HorizontalAlignment" Value="Left"/>
+      <Setter Property="VerticalAlignment" Value="Top"/>
+      <Setter Property="TextWrapping" Value="NoWrap"/>
+      <Setter Property="TextTrimming" Value="WordEllipsis"/>
+      <Setter Property="FontSize" Value="12"/>
+    </Style>
+
+    <!-- Temporary: Item container styles - to be deleted since an up to date version of these styles will be in generic.xaml -->
+
+    <Style x:Key="GridTileStyle"  TargetType="ListViewItem">
+      <Setter Property="FontFamily" Value="Segoe UI" />
+      <Setter Property="Foreground" Value="White" />
+      <Setter Property="Height" Value="Auto" />
+      <Setter Property="Width" Value="Auto" />
+      <Setter Property="Padding" Value="0" />
+      <Setter Property="Margin" Value="0,0,8,8" />
+      <Setter Property="HorizontalContentAlignment" Value="Left" />
+      <Setter Property="VerticalContentAlignment" Value="Bottom" />
+      <Setter Property="BorderThickness" Value="0"/>
+      <Setter Property="TabNavigation" Value="Local" />
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="ListViewItem">
+            <Grid Background="{TemplateBinding Background}">
+              <VisualStateManager.VisualStateGroups>
+                <VisualStateGroup x:Name="CommonStates">
+                  <VisualState x:Name="Normal" />
+                  <VisualState x:Name="MouseOver">
+                    <Storyboard>
+                      <DoubleAnimation Storyboard.TargetName="MouseOverVisual" Storyboard.TargetProperty="Opacity" Duration="0" To="1"/>
+                    </Storyboard>
+                  </VisualState>
+                  <VisualState x:Name="Disabled">
+                    <Storyboard>
+                      <DoubleAnimation Storyboard.TargetName="Contentpresenter" Storyboard.TargetProperty="Opacity" Duration="0" To=".55" />
+                    </Storyboard>
+                  </VisualState>
+                </VisualStateGroup>
+                <VisualStateGroup x:Name="SelectionStates">
+                  <VisualState x:Name="Unselected" />
+                  <VisualState x:Name="Selected">
+                    <Storyboard>
+                      <DoubleAnimation Storyboard.TargetName="SelectedVisual" Storyboard.TargetProperty="Opacity" Duration="0" To="1"/>
+                    </Storyboard>
+                  </VisualState>
+                </VisualStateGroup>
+                <VisualStateGroup x:Name="FocusStates">
+                  <VisualState x:Name="Focused">
+                    <Storyboard>
+                      <ObjectAnimationUsingKeyFrames Storyboard.TargetName="FocusVisualElement" Storyboard.TargetProperty="Visibility" Duration="0">
+                        <DiscreteObjectKeyFrame KeyTime="0">
+                          <DiscreteObjectKeyFrame.Value>
+                            <Visibility>Visible</Visibility>
+                          </DiscreteObjectKeyFrame.Value>
+                        </DiscreteObjectKeyFrame>
+                      </ObjectAnimationUsingKeyFrames>
+                    </Storyboard>
+                  </VisualState>
+                  <VisualState x:Name="Unfocused"/>
+                </VisualStateGroup>
+              </VisualStateManager.VisualStateGroups>
+              <ContentPresenter
+                      x:Name="Contentpresenter"
+                      Content="{TemplateBinding Content}"
+                      ContentTemplate="{TemplateBinding ContentTemplate}"
+                      HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                      Margin="{TemplateBinding Padding}"/>
+              <Rectangle x:Name="FocusVisualElement" Stroke="White" StrokeThickness="3" Visibility="Collapsed" />
+              <Rectangle x:Name="SelectedVisual" StrokeThickness="4" Opacity="0" Stroke="{StaticResource HighlightBrush}" IsHitTestVisible="False"  />
+              <Rectangle x:Name="MouseOverVisual"  StrokeThickness="4" Opacity="0" Stroke="DarkGray" IsHitTestVisible="False"  />
+            </Grid>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+
+    <Style x:Key="ListTileStyle" TargetType="ListViewItem">
+      <Setter Property="FontFamily" Value="Segoe UI" />
+      <Setter Property="Foreground" Value="White" />
+      <Setter Property="Height" Value="Auto" />
+      <Setter Property="Width" Value="Auto" />
+      <Setter Property="Padding" Value="0" />
+      <Setter Property="Margin" Value="0" />
+      <Setter Property="HorizontalContentAlignment" Value="Left" />
+      <Setter Property="VerticalContentAlignment" Value="Top" />
+      <Setter Property="BorderThickness" Value="0"/>
+      <Setter Property="TabNavigation" Value="Local" />
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="ListViewItem">
+            <Grid Background="{TemplateBinding Background}">
+              <VisualStateManager.VisualStateGroups>
+                <VisualStateGroup x:Name="CommonStates">
+                  <VisualState x:Name="Normal" />
+                  <VisualState x:Name="MouseOver">
+                    <Storyboard>
+                      <DoubleAnimation Storyboard.TargetName="MouseOverVisual" Storyboard.TargetProperty="Opacity" Duration="0" To="1"/>
+                    </Storyboard>
+                  </VisualState>
+                  <VisualState x:Name="Disabled">
+                    <Storyboard>
+                      <DoubleAnimation Storyboard.TargetName="Contentpresenter" Storyboard.TargetProperty="Opacity" Duration="0" To=".55" />
+                    </Storyboard>
+                  </VisualState>
+                </VisualStateGroup>
+                <VisualStateGroup x:Name="SelectionStates">
+                  <VisualState x:Name="Unselected" />
+                  <VisualState x:Name="Selected">
+                    <Storyboard>
+                      <DoubleAnimation Storyboard.TargetName="SelectedVisual" Storyboard.TargetProperty="Opacity" Duration="0" To="1"/>
+                    </Storyboard>
+                  </VisualState>
+                </VisualStateGroup>
+                <VisualStateGroup x:Name="FocusStates">
+                  <VisualState x:Name="Focused">
+                    <Storyboard>
+                      <ObjectAnimationUsingKeyFrames Storyboard.TargetName="FocusVisualElement" Storyboard.TargetProperty="Visibility" Duration="0">
+                        <DiscreteObjectKeyFrame KeyTime="0">
+                          <DiscreteObjectKeyFrame.Value>
+                            <Visibility>Visible</Visibility>
+                          </DiscreteObjectKeyFrame.Value>
+                        </DiscreteObjectKeyFrame>
+                      </ObjectAnimationUsingKeyFrames>
+                    </Storyboard>
+                  </VisualState>
+                  <VisualState x:Name="Unfocused"/>
+                </VisualStateGroup>
+              </VisualStateManager.VisualStateGroups>
+              <Rectangle x:Name="FocusVisualElement" Stroke="White" StrokeThickness="3" Visibility="Collapsed" />
+              <Rectangle x:Name="SelectedVisual" StrokeThickness="0" Opacity="0" Stroke="{StaticResource HighlightBrush}" Fill="{StaticResource HighlightBrush}" IsHitTestVisible="False"  />
+              <Rectangle x:Name="MouseOverVisual"  StrokeThickness="0" Opacity="0" Stroke="#FF353535" Fill="#FF353535" IsHitTestVisible="False"  />
+              <ContentPresenter
+                      x:Name="Contentpresenter"
+                      Content="{TemplateBinding Content}"
+                      ContentTemplate="{TemplateBinding ContentTemplate}"
+                      HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                      Margin="{TemplateBinding Padding}"/>
+            </Grid>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+
+    <!--
+      Item Templates
+      
+      Data-bound presentation of an individual item in an appropriate style.  External
+      margins should be avoided on any sides where alignment with other elements is a
+      consideration.
+    -->
+
+    <DataTemplate x:Key="GroupedItemTemplate">
+      <Grid HorizontalAlignment="Left" Width="252" Height="252">
+        <Border Style="{StaticResource ImagePlaceHolderStyle}" >
+          <Image Source="{Binding Image}" Margin="0" Stretch="UniformToFill"/>
+        </Border>
+        <StackPanel Grid.Column="1" Style="{StaticResource OverlayStackPanelStyle}">
+          <TextBlock TextWrapping="Wrap" Text="{Binding Description}" Style="{StaticResource NonWrappingSmallContentTextStyle}" Margin="12,8,12,2" HorizontalAlignment="Stretch" Foreground="{StaticResource ControlTextColor}" Height="60"/>
+          <TextBlock TextWrapping="Wrap" Text="{Binding Category}" Style="{StaticResource SubHeaderTextStyle}" Margin="12,0,12,8" HorizontalAlignment="Stretch" Height="20"/>
+        </StackPanel>
+      </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="PortraitListItemTemplate">
+      <Grid HorizontalAlignment="Stretch" Width="Auto" Height="132" Margin="0,0,0,0">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="Auto"/>
+          <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Border Style="{StaticResource ImagePlaceHolderStyle}" Margin="8,8,0,8" Width="116" Height="116" HorizontalAlignment="Left" VerticalAlignment="Top">
+          <Image Source="{Binding Image}" Margin="0" Stretch="UniformToFill"/>
+        </Border>
+        <StackPanel Grid.Column="1" Style="{StaticResource ItemStackPanelStyle}" HorizontalAlignment="Left" Margin="12,8,0,0">
+          <TextBlock TextTrimming="WordEllipsis" Text="{Binding Title}" Style="{StaticResource NonWrappingSmallContentTextStyle}" Width="360" Height="20"/>
+          <TextBlock Text="{Binding Subtitle}" TextWrapping="Wrap" TextTrimming="WordEllipsis" Style="{StaticResource SubHeaderTextStyle}" Width="300" Height="20" Margin="0,3,20,0"/>
+          <TextBlock Text="{Binding Description}" TextTrimming="WordEllipsis" Style="{StaticResource SmallContentFontStyle}" Width="360" Height="64"/>
+        </StackPanel>
+      </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="SnapListItemTemplate">
+      <Grid HorizontalAlignment="Left" Width="290" Height="60">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="Auto"/>
+          <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Border Style="{StaticResource ImagePlaceHolderStyle}" Margin="8,8,0,8" Width="44" Height="44" HorizontalAlignment="Left" VerticalAlignment="Top">
+          <Image Source="{Binding Image}" Margin="0" Stretch="UniformToFill"/>
+        </Border>
+        <StackPanel Grid.Column="1" Style="{StaticResource ItemStackPanelStyle}" HorizontalAlignment="Left" Margin="12,6,0,0">
+          <TextBlock TextWrapping="Wrap" Text="{Binding Title}" Style="{StaticResource NonWrappingSmallContentTextStyle}" Width="200" Height="20"/>
+          <TextBlock TextWrapping="Wrap" TextTrimming="WordEllipsis" Text="{Binding Subtitle}" Style="{StaticResource SubHeaderTextStyle}" Width="200" Height="20" Margin="0,0,0,0"/>
+        </StackPanel>
+      </Grid>
+    </DataTemplate>
+
+    <!--
+      Items Panels
+
+      Provide layout characteristics for item ListView and GridView collections.
+    -->
+
+    <ItemsPanelTemplate x:Key="GridItemsPanelTemplate">
+      <WrapGrid VerticalChildrenAlignment="Top" Margin="120,0,0,0" />
+    </ItemsPanelTemplate>
+
+    <ItemsPanelTemplate x:Key="PortraitListItemsPanelTemplate">
+      <VirtualizingStackPanel VirtualizationMode="Recycling" Margin="120,0,0,0"/>
+    </ItemsPanelTemplate>
+
+    <ItemsPanelTemplate x:Key="SnapListItemsPanelTemplate">
+      <VirtualizingStackPanel VirtualizationMode="Recycling" Margin="20,0,20,0" Width="320"/>
+    </ItemsPanelTemplate>
+
+    <ItemsPanelTemplate x:Key="FillListItemsPanelTemplate">
+      <VirtualizingStackPanel VirtualizationMode="Recycling" Margin="120,0,20,0" Width="416"/>
+    </ItemsPanelTemplate>
+    
+    <!--
+      Page-Specific Resources
+    -->
+
+    <CollectionViewSource x:Name="CollectionViewSource" x:Key="CollectionViewSource" />
+  </UserControl.Resources>
+
+  <!-- Page Content -->
+  
+  <Grid x:Name="LayoutRoot" Style="{StaticResource LayoutRootGridStyle}">
+    <VisualStateManager.VisualStateGroups>
+      <VisualStateGroup x:Name="OrientationStates">
+        <VisualState x:Name="Full"/>
+        <VisualState x:Name="Fill"/>
+        <VisualState x:Name="Portrait">
+          <Storyboard>
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ItemGridView" Storyboard.TargetProperty="Visibility" >
+              <DiscreteObjectKeyFrame KeyTime="0" Value="Collapsed"/>
+            </ObjectAnimationUsingKeyFrames>
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ItemListView" Storyboard.TargetProperty="Visibility" >
+              <DiscreteObjectKeyFrame KeyTime="0" Value="Visible"/>
+            </ObjectAnimationUsingKeyFrames>
+          </Storyboard>
+        </VisualState>
+        <VisualState x:Name="Snapped">
+          <Storyboard>
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Style" Storyboard.TargetName="BackButton">
+              <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource SnapBackButtonStyle}"/>
+            </ObjectAnimationUsingKeyFrames>
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Style" Storyboard.TargetName="PageTitle">
+              <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource SnapPageTitleStyle}"/>
+            </ObjectAnimationUsingKeyFrames>
+
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="ItemTemplate" Storyboard.TargetName="ItemListView">
+              <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource SnapListItemTemplate}"/>
+            </ObjectAnimationUsingKeyFrames>
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="ItemsPanel" Storyboard.TargetName="ItemListView">
+              <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource SnapListItemsPanelTemplate}"/>
+            </ObjectAnimationUsingKeyFrames>
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ItemGridView" Storyboard.TargetProperty="Visibility" >
+              <DiscreteObjectKeyFrame KeyTime="0" Value="Collapsed"/>
+            </ObjectAnimationUsingKeyFrames>
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ItemListView" Storyboard.TargetProperty="Visibility" >
+              <DiscreteObjectKeyFrame KeyTime="0" Value="Visible"/>
+            </ObjectAnimationUsingKeyFrames>
+          </Storyboard>
+        </VisualState>
+      </VisualStateGroup>
+    </VisualStateManager.VisualStateGroups>
+
+    <Grid.RowDefinitions>
+      <RowDefinition Height="140"/>
+      <RowDefinition Height="*"/>
+    </Grid.RowDefinitions>
+
+    <Grid>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="Auto" />
+        <ColumnDefinition Width="*" />
+      </Grid.ColumnDefinitions>
+      <Button x:Name="BackButton" Style="{StaticResource BackButtonStyle}"/>
+      <TextBlock x:Name="PageTitle" Text="{StaticResource AppName}" Style="{StaticResource PageTitleStyle}" Grid.Column="1" />
+    </Grid>
+
+    <GridView x:Name="ItemGridView" ItemsSource="{Binding Source={StaticResource CollectionViewSource}}" ItemTemplate="{StaticResource GroupedItemTemplate}" ItemContainerStyle="{StaticResource GridTileStyle}" ItemsPanel="{StaticResource GridItemsPanelTemplate}"
+              Grid.Row="1" Background="{StaticResource PageBackgroundBrush}" BorderThickness="0" VerticalAlignment="Stretch"
+              SelectionChanged="ItemView_SelectionChanged"/>
+    <ListView x:Name="ItemListView" ItemsSource="{Binding Source={StaticResource CollectionViewSource}}" ItemTemplate="{StaticResource PortraitListItemTemplate}" ItemContainerStyle="{StaticResource ListTileStyle}"  ItemsPanel="{StaticResource PortraitListItemsPanelTemplate}"
+              Visibility="Collapsed" Grid.Row="1" Background="{StaticResource PageBackgroundBrush}" BorderThickness="0" VerticalAlignment="Stretch"
+              SelectionChanged="ItemView_SelectionChanged"/>
+  </Grid>
+
+</UserControl>

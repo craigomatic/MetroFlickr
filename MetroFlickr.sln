@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 11 Express for Windows 8
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetroFlickr", "src\MetroFlickr\MetroFlickr.csproj", "{8158411F-1FDF-4EB0-B638-2A5AF24F59E7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetroFlickr.Model", "src\MetroFlickr.Model\MetroFlickr.Model.csproj", "{754B2CF3-2FCA-4AD3-B03D-ADC6969F200C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{754B2CF3-2FCA-4AD3-B03D-ADC6969F200C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{754B2CF3-2FCA-4AD3-B03D-ADC6969F200C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{754B2CF3-2FCA-4AD3-B03D-ADC6969F200C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{754B2CF3-2FCA-4AD3-B03D-ADC6969F200C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8158411F-1FDF-4EB0-B638-2A5AF24F59E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8158411F-1FDF-4EB0-B638-2A5AF24F59E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8158411F-1FDF-4EB0-B638-2A5AF24F59E7}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{8158411F-1FDF-4EB0-B638-2A5AF24F59E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8158411F-1FDF-4EB0-B638-2A5AF24F59E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8158411F-1FDF-4EB0-B638-2A5AF24F59E7}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

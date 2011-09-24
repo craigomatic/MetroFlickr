@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Package xmlns="http://schemas.microsoft.com/appx/2010/manifest">
+  <Identity Name="efbeeb68-af16-4a28-ae86-9e0e9d7ce097" Publisher="CN=Craig Presti" Version="1.0.0.0" />
+  <Properties>
+    <DisplayName>MetroFlickr</DisplayName>
+    <PublisherDisplayName>Craig Presti</PublisherDisplayName>
+    <Logo>Images\StoreLogo.png</Logo>
+    <Description>MetroFlickr</Description>
+  </Properties>
+  <Prerequisites>
+    <OSMinVersion>6.2</OSMinVersion>
+    <OSMaxVersionTested>6.2</OSMaxVersionTested>
+  </Prerequisites>
+  <Resources>
+    <Resource Language="en-us" />
+  </Resources>
+  <Applications>
+    <Application Id="App" Executable="metroflickr.exe" EntryPoint="MetroFlickr.App">
+      <VisualElements DisplayName="MetroFlickr" Logo="Images\Logo.png" SmallLogo="Images\SmallLogo.png" Description="MetroFlickr" ForegroundText="light" BackgroundColor="#222222" InitialRotationPreference="portrait">
+        <SplashScreen Image="Images\SplashScreen.png" />
+      </VisualElements>
+      <Extensions>
+        <Extension Category="windows.search" Executable="metroflickr.exe" EntryPoint="MetroFlickr.App" />
+        <Extension Category="windows.filePicker" Executable="metroflickr.exe" EntryPoint="MetroFlickr.App">
+          <FilePicker>
+            <SupportedFileTypes>
+              <FileType>.jpg</FileType>
+            </SupportedFileTypes>
+          </FilePicker>
+        </Extension>
+      </Extensions>
+    </Application>
+  </Applications>
+  <Capabilities>
+    <Capability Name="internetClient" />
+  </Capabilities>
+</Package>

@@ -68,7 +68,7 @@ namespace MetroFlickr.Model
             return task;
         }
 
-        public Task<List<FlickrImage>> Search(string searchTerm)
+        public Task<List<FlickrImage>> SearchAsync(string searchTerm, Windows.UI.Core.CoreDispatcher dispatcher)
         {
             return Task.Run<List<FlickrImage>>(() =>
             {
@@ -78,7 +78,11 @@ namespace MetroFlickr.Model
 
                 foreach (var photo in photos)
                 {
-                    flickrImages.Add(new FlickrImage(null, photo.Medium640Url, photo.Title));
+                    dispatcher.Invoke(Windows.UI.Core.CoreDispatcherPriority.Normal, (x, y) =>
+                    {
+                        flickrImages.Add(new FlickrImage(null, photo.Medium640Url, photo.Title));
+                    }, 
+                    this, null);
                 }
                 return flickrImages;
             });

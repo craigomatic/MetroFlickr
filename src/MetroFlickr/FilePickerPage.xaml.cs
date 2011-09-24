@@ -97,13 +97,10 @@ namespace MetroFlickr
         {
             _FilePickerBasket = args.Basket;
 
-            //TODO: Async calls to populate the images in the view
-            var flickrDataSource = new FlickrDataSource("craigomatic", App.ApiKey);
-
             Task.Run(() =>
             {
-                flickrDataSource.LoadAsync(this.Dispatcher);
-                this.Items = flickrDataSource.ImageSets;
+                App.FlickrDataSource.LoadAsync(this.Dispatcher);
+                this.Items = App.FlickrDataSource.ImageSets;
             });
 
             Window.Current.Content = this;

@@ -88,16 +88,12 @@ namespace MetroFlickr
             return "Full";
         }
 
-        internal void Activate(Windows.ApplicationModel.Activation.SearchActivatedEventArgs args)
+        internal async void Activate(Windows.ApplicationModel.Activation.SearchActivatedEventArgs args)
         {
             //TODO: Break out useful parameters from the activation context
 
             //TODO: Application-specific searching logic
-            var flickrDataSource = new FlickrDataSource("craigomatic", App.ApiKey);
-            var results = flickrDataSource.Search(args.QueryText).Result;
-
-            // Display the results            
-            this.Items = results;
+            this.Items = await App.FlickrDataSource.SearchAsync(args.QueryText, this.Dispatcher);
 
             Window.Current.Content = this;            
             Window.Current.Activate();

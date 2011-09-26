@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using MetroFlickr.Controllers;
 using MetroFlickr.Model;
 using Windows.Foundation;
 using Windows.Graphics.Display;
@@ -13,40 +14,32 @@ namespace MetroFlickr
 {
     public sealed partial class ImageCollectionPage
     {
+        public NavigationController NavigationController { get; private set; }
+
         public ImageCollectionPage()
         {
             InitializeComponent();
         }
 
+        public ImageCollectionPage(NavigationController navigationController)
+            : this()
+        {
+            this.NavigationController = navigationController;
+        }
+
         void ItemView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            UserControl page = null;
-            
             if (this.DataContext is FlickrDataSource)
             {
-                //display a page with the images from the selected set
-                page = new ImageCollectionPage();
-
+                //display the selected collection
                 var imageSet = e.AddedItems[0] as FlickrImageSet;
-                page.DataContext = imageSet;
-                (page as ImageCollectionPage).BackButton.IsEnabled = true;
-                (page as ImageCollectionPage).Items = imageSet.Collection;
+                this.NavigationController.SetView(imageSet.Title, ViewType.Collection, imageSet, imageSet.Collection, null);                
             }
             else if (this.DataContext is FlickrImageSet)
             {
                 //display the selected image in detail view
-                page = new ImageDetailPage();
-
                 var image = e.AddedItems[0] as FlickrImage;
-                page.DataContext = image;
-                (page as ImageDetailPage).Items = image.ImageSet.Collection;
-                (page as ImageDetailPage).Item = image;
-            }
-
-            if (page != null)
-            {
-                Window.Current.Content = page;
-                Window.Current.Activate();
+                this.NavigationController.SetView(image.Title, ViewType.Detail, image, image.ImageSet.Collection, image);
             }
         }
 
@@ -119,12 +112,7 @@ namespace MetroFlickr
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
             //back is only enabled when looking at a specific imageset, so go back home
-            var page = new ImageCollectionPage();
-            page.DataContext = App.FlickrDataSource;
-            page.Items = App.FlickrDataSource.ImageSets;
-
-            Window.Current.Content = page;
-            Window.Current.Activate();
+            this.NavigationController.SetView("MetroFlickr", ViewType.Home, null, null, null);
         }
     }
 }

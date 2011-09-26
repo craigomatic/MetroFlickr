@@ -12,4 +12,14 @@ namespace MetroFlickr.Model
         Medium,
         High
     }
+
+    public enum ViewType
+    {
+        Collection,
+        Detail,
+        FilePicker,
+        Home,
+        Search,
+        Settings
+    }
 }

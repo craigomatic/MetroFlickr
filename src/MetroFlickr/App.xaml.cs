@@ -4,26 +4,19 @@ using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml;
 using MetroFlickr.Model;
 using Windows.UI.ApplicationSettings;
+using MetroFlickr.Controllers;
+using Windows.UI.Popups;
 
 namespace MetroFlickr
 {
     partial class App
     {
-        public static readonly string ApiKey = "INSERT_API_KEY";
-        public static FlickrDataSource FlickrDataSource;
-       
-        private static string _Username = "INSERT_USERNAME";
 
         public App()
         {
             InitializeComponent();
         }
-
-        void Current_DataChanged(Windows.Storage.ApplicationData sender, object args)
-        {
-            
-        }
-
+        
         protected override void OnFilePickerActivated(FilePickerActivatedEventArgs args)
         {
             var filePickerPage = new FilePickerPage();
@@ -36,21 +29,11 @@ namespace MetroFlickr
             searchResultsPage.Activate(args);
         }
 
-        protected override async void OnLaunched(LaunchActivatedEventArgs args)
-        {
-            //TODO: look in the roaming settings for the API key and username rather than the hardcode
-           
-            var page = new ImageCollectionPage();
-
-            FlickrDataSource = new FlickrDataSource(_Username, App.ApiKey);
-            page.DataContext = App.FlickrDataSource;
-            
-
+        protected override void OnLaunched(LaunchActivatedEventArgs args)
+        {            
+            var page = new MainPage();
             Window.Current.Content = page;
             Window.Current.Activate();
-
-            await FlickrDataSource.LoadAsync(page.Dispatcher);
-            page.Items = FlickrDataSource.ImageSets;
         }
     }
 }

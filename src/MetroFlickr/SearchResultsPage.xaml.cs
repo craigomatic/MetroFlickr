@@ -93,10 +93,10 @@ namespace MetroFlickr
             //TODO: Break out useful parameters from the activation context
 
             //TODO: Application-specific searching logic
-            this.Items = await App.FlickrDataSource.SearchAsync(args.QueryText, this.Dispatcher);
+            //this.Items = await App.FlickrDataSource.SearchAsync(args.QueryText, this.Dispatcher);
 
-            Window.Current.Content = this;            
-            Window.Current.Activate();
+            //Window.Current.Content = this;            
+            //Window.Current.Activate();
         }
     }
 }

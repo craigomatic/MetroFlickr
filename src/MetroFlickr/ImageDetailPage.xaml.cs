@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using MetroFlickr.Controllers;
 using MetroFlickr.Model;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
@@ -15,6 +16,8 @@ namespace MetroFlickr
 {
     public sealed partial class ImageDetailPage
     {
+        public NavigationController NavigationController { get; private set; }
+
         private PropertySet _flipState = new PropertySet();
 
         public ImageDetailPage()
@@ -26,25 +29,21 @@ namespace MetroFlickr
             ApplicationBar.DataContext = _flipState;
         }
 
+        public ImageDetailPage(NavigationController navigationController)
+            : this()
+        {
+            this.NavigationController = navigationController;            
+        }
+
         void HomeButton_Click(object sender, RoutedEventArgs e)
         {
-            var page = new ImageCollectionPage();
-            page.DataContext = App.FlickrDataSource;
-            page.Items = App.FlickrDataSource.ImageSets;
-
-            Window.Current.Content = page;
-            Window.Current.Activate();
+            this.NavigationController.SetView("MetroFlickr", ViewType.Home, null, null, null);
         }
 
         void BackButton_Click(object sender, RoutedEventArgs e)
         {
             var associatedImageSet = (this.DataContext as FlickrImage).ImageSet;
-            var page = new ImageCollectionPage();
-            page.DataContext = associatedImageSet;
-            page.Items = associatedImageSet.Collection;
-
-            Window.Current.Content = page;
-            Window.Current.Activate();
+            this.NavigationController.SetView(associatedImageSet.Title, ViewType.Collection, associatedImageSet, associatedImageSet.Collection, null);
         }
 
         private IEnumerable<Object> _items;

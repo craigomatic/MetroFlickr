@@ -97,14 +97,14 @@ namespace MetroFlickr
         {
             _FilePickerBasket = args.Basket;
 
-            Task.Run(() =>
-            {
-                App.FlickrDataSource.LoadAsync(this.Dispatcher);
-                this.Items = App.FlickrDataSource.ImageSets;
-            });
+            //Task.Run(() =>
+            //{
+            //    App.FlickrDataSource.LoadAsync(this.Dispatcher);
+            //    this.Items = App.FlickrDataSource.ImageSets;
+            //});
 
-            Window.Current.Content = this;
-            Window.Current.Activate();
+            //Window.Current.Content = this;
+            //Window.Current.Activate();
         }
     }
 }

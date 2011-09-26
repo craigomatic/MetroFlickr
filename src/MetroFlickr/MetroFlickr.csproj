@@ -35,6 +35,10 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controllers\NavigationController.cs" />
+    <Compile Include="MainPage.xaml.cs">
+      <DependentUpon>MainPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="FilePickerPage.xaml.cs">
       <DependentUpon>FilePickerPage.xaml</DependentUpon>
     </Compile>
@@ -48,6 +52,9 @@
     <Compile Include="SearchResultsPage.xaml.cs">
       <DependentUpon>SearchResultsPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Settings.xaml.cs">
+      <DependentUpon>Settings.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -55,6 +62,14 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="MainPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Settings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="FilePickerPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

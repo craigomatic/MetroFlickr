@@ -14,7 +14,7 @@
         <SolidColorBrush x:Key="HighlightBrush" Color="#FF26A0DA"/>
     </UserControl.Resources>
 
-    <Grid x:Name="LayoutRoot" Width="340" VerticalAlignment="Stretch"  Background="{StaticResource PageBackgroundBrush}">
+    <Grid x:Name="LayoutRoot" Width="646" VerticalAlignment="Stretch"  Background="#0D8845">
         <Grid.Transitions>
             <TransitionCollection>
                 <EntranceThemeTransition FromHorizontalOffset="60" />
@@ -22,7 +22,7 @@
             </TransitionCollection>
         </Grid.Transitions>
         <StackPanel>
-            <TextBlock Margin="40,32,0,0" FontSize="26.667" Text="Options" />
+            <TextBlock Margin="40,32,0,0" FontSize="26.667" Text="Preferences" />
             <StackPanel Orientation="Horizontal" Margin="40,34,0,0">
                 <Image Source="/images/Logo.png" Width="90" Height="90" />
                 <StackPanel VerticalAlignment="Top" Margin="10,0,0,0">
@@ -32,11 +32,11 @@
             </StackPanel>
             <StackPanel Margin="40,34,0,0">
                 <TextBlock FontSize="18" Text="Flickr API Key" />
-                <TextBox x:Name="FlickrApiKey" Width="300" TextChanged="TextBox_TextChanged"/>
+                <TextBox x:Name="FlickrApiKey" Width="570" HorizontalAlignment="Left" TextChanged="TextBox_TextChanged"/>
             </StackPanel>
             <StackPanel Margin="40,34,0,0">
                 <TextBlock FontSize="18" Text="Flickr Username" />
-                 <TextBox x:Name="FlickrUsername" Width="300" TextChanged="TextBox_TextChanged"/>
+                 <TextBox x:Name="FlickrUsername" Width="570" HorizontalAlignment="Left"  TextChanged="TextBox_TextChanged"/>
             </StackPanel>
         </StackPanel>
     </Grid>

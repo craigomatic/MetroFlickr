@@ -1,11 +1,10 @@
-﻿
-    <UserControl x:Class="MetroFlickr.ImageDetailPage"
+﻿<UserControl x:Class="MetroFlickr.ImageDetailPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    d:DesignHeight="768" d:DesignWidth="1366" Loaded="Page_Loaded" Unloaded="Page_Unloaded" x:Name="This">
+    d:DesignHeight="768" d:DesignWidth="1366" Loaded="Page_Loaded" Unloaded="Page_Unloaded">
 
   <UserControl.Resources>
     <!--
@@ -239,7 +238,7 @@
         <ColumnDefinition Width="*" />
       </Grid.ColumnDefinitions>
       <Button x:Name="BackButton" Click="BackButton_Click" Style="{StaticResource BackButtonStyle}"/>
-      <TextBlock x:Name="PageTitle" Text="{Binding ElementName=This, Path=NavigationController.BreadCrumb}" Style="{StaticResource PageTitleStyle}" Grid.Column="1" />
+      <TextBlock x:Name="PageTitle" Text="{Binding Title}" Style="{StaticResource PageTitleStyle}" Grid.Column="1" />
     </Grid>
     
     <FlipView x:Name="FlipView" Background="{StaticResource PageBackgroundBrush}" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ItemsSource="{Binding Source={StaticResource CollectionViewSource}}" SelectionChanged="FlipView_SelectionChanged">

@@ -13,8 +13,6 @@ namespace MetroFlickr
 {
     public sealed partial class Settings
     {
-        public event RoutedEventHandler ReadyToRun;
-
         public Settings()
         {
             InitializeComponent();

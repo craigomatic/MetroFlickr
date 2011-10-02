@@ -1,4 +1,5 @@
-﻿<UserControl x:Class="MetroFlickr.ImageDetailPage"
+﻿
+    <UserControl x:Class="MetroFlickr.ImageDetailPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -138,15 +139,6 @@
                 <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Style" Storyboard.TargetName="DetailContentStackPanel">
                   <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PortraitDetailContentStackPanelStyle}"/>
                 </ObjectAnimationUsingKeyFrames>
-                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Style" Storyboard.TargetName="ContentPanel1">
-                  <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PortraitContentPanelStyle}"/>
-                </ObjectAnimationUsingKeyFrames>
-                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Style" Storyboard.TargetName="ContentPanel2">
-                  <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PortraitContentPanelStyle}"/>
-                </ObjectAnimationUsingKeyFrames>
-                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Style" Storyboard.TargetName="ContentPanel3">
-                  <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PortraitContentPanelStyle}"/>
-                </ObjectAnimationUsingKeyFrames>
               </Storyboard>
             </VisualState>
             <VisualState x:Name="Snapped">
@@ -163,41 +155,13 @@
                 <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Height" Storyboard.TargetName="Image">
                   <DiscreteObjectKeyFrame KeyTime="0" Value="180"/>
                 </ObjectAnimationUsingKeyFrames>
-                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Style" Storyboard.TargetName="ContentPanel1">
-                  <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource SnapContentPanelStyle}"/>
-                </ObjectAnimationUsingKeyFrames>
-                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Style" Storyboard.TargetName="ContentPanel2">
-                  <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource SnapContentPanelStyle}"/>
-                </ObjectAnimationUsingKeyFrames>
-                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Style" Storyboard.TargetName="ContentPanel3">
-                  <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource SnapContentPanelStyle}"/>
-                </ObjectAnimationUsingKeyFrames>
               </Storyboard>
             </VisualState>
           </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
 
         <StackPanel x:Name="DetailContentStackPanel"  Style="{StaticResource DetailContentStackPanelStyle}" Grid.Row="1" >
-          <!-- Temporary: Move to Linked Text Container when available. -->
-          <StackPanel x:Name="ContentPanel1" Style="{StaticResource PrimaryContentPanelStyle}">
-            <TextBlock x:Name="DetailTitle" Height="74" Style="{StaticResource LargeContentFontStyle}" Text="{Binding Subtitle}"/>
-            <Grid x:Name="ImageGrid" Width="Auto" Margin="0,8,0,0" Background="#FF3B3B3B" HorizontalAlignment="Stretch"  VerticalAlignment="Top">
-              <Image x:Name="Image" Height="300" Margin="0" Stretch="UniformToFill" Source="{Binding Image}"/>
-            </Grid>
-            <TextBlock x:Name="DetailSubtitle" Style="{StaticResource SmallContentFontStyle}" Margin="0,8,0,0" Text="{Binding Category}" Foreground="#7FFFFFFF"/>
-            <TextBlock Text="{Binding Title}" Margin="0,3,0,0" Style="{StaticResource SmallContentFontStyle}"/>
-            <TextBlock Text="{Binding Content}" Margin="0,8,0,0" Style="{StaticResource SmallContentFontStyle}"/>
-          </StackPanel>
-          <StackPanel x:Name="ContentPanel2" Style="{StaticResource SecondaryContentPanelStyle}">
-            <TextBlock Text="{Binding Content}" Margin="0,8,0,0" Style="{StaticResource SmallContentFontStyle}"/>
-            <TextBlock Text="{Binding Category}" Margin="0,8,0,0" Style="{StaticResource SmallContentFontStyle}"/>
-            <TextBlock Text="{Binding Content}" Margin="0,8,0,0" Style="{StaticResource SmallContentFontStyle}"/>
-          </StackPanel>
-          <StackPanel x:Name="ContentPanel3" Style="{StaticResource SecondaryContentPanelStyle}">
-            <TextBlock Text="{Binding Content}" Margin="0,8,0,0" Style="{StaticResource SmallContentFontStyle}"/>
-            <TextBlock Text="{Binding Category}" Margin="0,8,0,0" Style="{StaticResource SmallContentFontStyle}"/>
-            <TextBlock Text="{Binding Content}" Margin="0,8,0,0" Style="{StaticResource SmallContentFontStyle}"/>
-          </StackPanel>
+            <Image x:Name="Image" Margin="0" Stretch="UniformToFill" Source="{Binding Image}"/>
           <!--Temporary: Disabled, but should eventually be used to reveal "related items" for the detail page-->
           <!--<GridView x:Name="ItemGridView" Width="Auto" Height="Auto" Background="{StaticResource PageBackgroundBrush}" ItemTemplate="{StaticResource ListItemTemplate}" ItemContainerStyle="{StaticResource ListTileStyle}" ItemsPanel="{StaticResource GridItemsPanelTemplate}" BorderThickness="0" VerticalAlignment="Stretch"
                 Style="{StaticResource HorizontalScrollViewStyle}" />-->
@@ -228,7 +192,7 @@
     </VisualStateManager.VisualStateGroups>
 
     <Grid.RowDefinitions>
-      <RowDefinition Height="140"/>
+      <RowDefinition Height="0"/>
       <RowDefinition Height="*"/>
     </Grid.RowDefinitions>
 

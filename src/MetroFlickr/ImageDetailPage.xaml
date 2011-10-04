@@ -161,7 +161,7 @@
         </VisualStateManager.VisualStateGroups>
 
         <StackPanel x:Name="DetailContentStackPanel"  Style="{StaticResource DetailContentStackPanelStyle}" Grid.Row="1" >
-            <Image x:Name="Image" Margin="0" Stretch="UniformToFill" Source="{Binding Image}"/>
+            <Image x:Name="Image" Margin="0" Stretch="UniformToFill" Source="{Binding LargeImage}"/>
           <!--Temporary: Disabled, but should eventually be used to reveal "related items" for the detail page-->
           <!--<GridView x:Name="ItemGridView" Width="Auto" Height="Auto" Background="{StaticResource PageBackgroundBrush}" ItemTemplate="{StaticResource ListItemTemplate}" ItemContainerStyle="{StaticResource ListTileStyle}" ItemsPanel="{StaticResource GridItemsPanelTemplate}" BorderThickness="0" VerticalAlignment="Stretch"
                 Style="{StaticResource HorizontalScrollViewStyle}" />-->

@@ -54,7 +54,7 @@ namespace MetroFlickr.Model
                     {
                         dispatcher.Invoke(Windows.UI.Core.CoreDispatcherPriority.Normal, (x,y) =>
                         {
-                            var image = new FlickrImage(imageSet, photo.Medium640Url, photo.Title);
+                            var image = new FlickrImage(imageSet, photo.SmallUrl, photo.DoesLargeExist ? photo.LargeUrl : photo.Medium640Url, photo.Title);
                             imageSet.Collection.Add(image);
 
                         }, 
@@ -80,7 +80,7 @@ namespace MetroFlickr.Model
                 {
                     dispatcher.Invoke(Windows.UI.Core.CoreDispatcherPriority.Normal, (x, y) =>
                     {
-                        flickrImages.Add(new FlickrImage(null, photo.Medium640Url, photo.Title));
+                        flickrImages.Add(new FlickrImage(null, photo.SmallUrl, photo.DoesLargeExist ? photo.LargeUrl : photo.Medium640Url, photo.Title));
                     }, 
                     this, null);
                 }

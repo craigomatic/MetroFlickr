@@ -15,12 +15,24 @@ namespace MetroFlickr.Model
 
         public ImageSource Image { get; private set; }
 
+        private string _LargeImageUri;
+
+        public ImageSource LargeImage
+        {
+            get
+            {
+                return new BitmapImage(new Uri(_LargeImageUri));
+            }
+        }
+
         public FlickrImageSet ImageSet { get; private set; }
 
-        public FlickrImage(FlickrImageSet imageSet, string imageUri, string title)
+        public FlickrImage(FlickrImageSet imageSet, string smallImageUri, string largeImageUri, string title)
         {
+            _LargeImageUri = largeImageUri;
+
             this.ImageSet = imageSet;
-            this.Image = new BitmapImage(new Uri(imageUri));
+            this.Image = new BitmapImage(new Uri(smallImageUri));
             this.Title = title;
         }
     }

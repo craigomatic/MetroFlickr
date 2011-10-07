@@ -16,6 +16,7 @@ namespace MetroFlickr.Model
         public ImageSource Image { get; private set; }
 
         private string _LargeImageUri;
+        private string _SmallImageUri;
 
         public ImageSource LargeImage
         {
@@ -29,11 +30,17 @@ namespace MetroFlickr.Model
 
         public FlickrImage(FlickrImageSet imageSet, string smallImageUri, string largeImageUri, string title)
         {
+            _SmallImageUri = smallImageUri;
             _LargeImageUri = largeImageUri;
 
             this.ImageSet = imageSet;
             this.Image = new BitmapImage(new Uri(smallImageUri));
             this.Title = title;
         }
+
+        public override string ToString()
+        {
+            return string.Format("[Img] {0} - {1}", _SmallImageUri, this.Title);
+        }        
     }
 }

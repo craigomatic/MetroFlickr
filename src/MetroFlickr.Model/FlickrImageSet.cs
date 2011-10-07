@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 
 namespace MetroFlickr.Model
 {
-    public class FlickrImageSet : NotificationObject
+    public class FlickrImageSet : NotificationObject, IGroupInfo
     {
         public string Title { get; set; }
 
@@ -33,6 +34,26 @@ namespace MetroFlickr.Model
             this.Title = title;
             this.Date = date;
             this.Description = string.IsNullOrWhiteSpace(description) ? title : description;
+        }
+
+        public override string ToString()
+        {
+            return string.Format("[ImgSet] {0} - {1} images", this.Title, this.Collection.Count);
+        }
+
+        public object Key
+        {
+            get { return this.Title; }
+        }
+
+        public IEnumerator<object> GetEnumerator()
+        {
+            return this.Collection.GetEnumerator();
+        }
+
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            return this.Collection.GetEnumerator();
         }
     }
 }

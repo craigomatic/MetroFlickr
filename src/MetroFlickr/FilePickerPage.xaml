@@ -16,8 +16,6 @@
       existing project, but may be deleted if they are duplicates.
     -->
     
-    <!-- TODO: Delete this line if the key AppName is declared in App.xaml -->
-    <x:String x:Key="AppName">My Application</x:String>
     <SolidColorBrush x:Key="PageBackgroundBrush" Color="#FF0C0C0C"/>
     <SolidColorBrush x:Key="PageForegroundBrush" Color="White"/>
     <SolidColorBrush x:Key="HighlightBrush" Color="#FF26A0DA"/>
@@ -448,27 +446,83 @@
         </VisualState>
       </VisualStateGroup>
     </VisualStateManager.VisualStateGroups>
-
-    <Grid.RowDefinitions>
-      <RowDefinition Height="140"/>
-      <RowDefinition Height="*"/>
-    </Grid.RowDefinitions>
-
-    <Grid>
-      <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="Auto" />
-        <ColumnDefinition Width="*" />
-      </Grid.ColumnDefinitions>
-      <Button x:Name="BackButton" Style="{StaticResource BackButtonStyle}"/>
-      <TextBlock x:Name="PageTitle" Text="{StaticResource AppName}" Style="{StaticResource PageTitleStyle}" Grid.Column="1" />
-    </Grid>
-
-    <GridView x:Name="ItemGridView" ItemsSource="{Binding Source={StaticResource CollectionViewSource}}" ItemTemplate="{StaticResource GroupedItemTemplate}" ItemContainerStyle="{StaticResource GridTileStyle}" ItemsPanel="{StaticResource GridItemsPanelTemplate}"
-              Grid.Row="1" Background="{StaticResource PageBackgroundBrush}" BorderThickness="0" VerticalAlignment="Stretch"
-              SelectionChanged="ItemView_SelectionChanged"/>
-    <ListView x:Name="ItemListView" ItemsSource="{Binding Source={StaticResource CollectionViewSource}}" ItemTemplate="{StaticResource PortraitListItemTemplate}" ItemContainerStyle="{StaticResource ListTileStyle}"  ItemsPanel="{StaticResource PortraitListItemsPanelTemplate}"
-              Visibility="Collapsed" Grid.Row="1" Background="{StaticResource PageBackgroundBrush}" BorderThickness="0" VerticalAlignment="Stretch"
-              SelectionChanged="ItemView_SelectionChanged"/>
+      
+    <JumpViewer x:Name="JumpViewer" Background="#FFFF0000">
+                                <JumpViewer.JumpView>
+                                    <GridView Foreground="White">
+                                        <GridView.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock
+                                                    Text="{Binding Name}"
+                                                    FontFamily="Segoe UI Light"
+                                                    FontSize="24"
+                                                    Foreground="Black" />
+                                            </DataTemplate>
+                                        </GridView.ItemTemplate>
+                                        <GridView.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <WrapGrid  ItemHeight="75" MaximumRowsOrColumns="6" VerticalChildrenAlignment="Center" />
+                                            </ItemsPanelTemplate>
+                                        </GridView.ItemsPanel>
+                                        <GridView.ItemContainerStyle>
+                                            <Style TargetType="ListViewItem">
+                                                <Setter Property="Margin" Value="4" />
+                                                <Setter Property="Padding" Value="10" />
+                                                <Setter Property="BorderBrush" Value="Gray" />
+                                                <Setter Property="BorderThickness" Value="1" />
+                                                <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                                <Setter Property="VerticalContentAlignment" Value="Center" />
+                                            </Style>
+                                        </GridView.ItemContainerStyle>
+                                    </GridView>
+                                </JumpViewer.JumpView>
+                                <JumpViewer.ContentView>
+                                    <GridView ItemsSource="{Binding Source={StaticResource CollectionViewSource}}" IsCrossSlideEnabled="True">
+                                        <GridView.ItemTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal" Margin="10,10,0,0" HorizontalAlignment="Left" Background="White">
+                                                    <Image Source="{Binding Image}" Height="60" Width="60" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                                                    <TextBlock TextWrapping="Wrap" Style="{StaticResource ItemTitleStyle}" Width="200" VerticalAlignment="Center" Text="{Binding Title}" HorizontalAlignment="Left" FontFamily="Segoe UI" />
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </GridView.ItemTemplate>
+                                        <GridView.GroupStyle>
+                                            <GroupStyle>
+                                                <GroupStyle.HeaderTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock Text='{Binding Name}' Foreground="Gray" Margin="5" FontSize="18" FontFamily="Segoe UI Light" />
+                                                    </DataTemplate>
+                                                </GroupStyle.HeaderTemplate>
+                                                <GroupStyle.ContainerStyle>
+                                                    <Style TargetType="GroupItem">
+                                                        <Setter Property="Template">
+                                                            <Setter.Value>
+                                                                <ControlTemplate TargetType="GroupItem">
+                                                                    <StackPanel Orientation="Vertical">
+                                                                        <ContentPresenter Content="{TemplateBinding Content}" />
+                                                                        <ItemsControl x:Name="ItemsControl" ItemsSource="{Binding GroupItems}" />
+                                                                    </StackPanel>
+                                                                </ControlTemplate>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </Style>
+                                                </GroupStyle.ContainerStyle>
+                                                <GroupStyle.Panel>
+                                                    <ItemsPanelTemplate>
+                                                        <VariableSizedWrapGrid Orientation="Vertical" MaximumRowsOrColumns="3" />
+                                                    </ItemsPanelTemplate>
+                                                </GroupStyle.Panel>
+                                            </GroupStyle>
+                                        </GridView.GroupStyle>
+                                        <GridView.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <StackPanel Orientation="Horizontal" />
+                                            </ItemsPanelTemplate>
+                                        </GridView.ItemsPanel>
+                                        <Button Visibility="Collapsed"/>
+                                    </GridView>
+                                </JumpViewer.ContentView>
+                            </JumpViewer>
   </Grid>
 
 </UserControl>

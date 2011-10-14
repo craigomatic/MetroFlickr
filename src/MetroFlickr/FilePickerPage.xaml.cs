@@ -19,7 +19,13 @@ namespace MetroFlickr
         public FilePickerPage()
         {
             InitializeComponent();
-            BackButton.IsEnabled = false;
+            
+            JumpViewer.ViewChangeCompleted += new JumpViewerViewChangedEventHandler(JumpViewer_ViewChangeCompleted);
+        }
+
+        void JumpViewer_ViewChangeCompleted(object sender, JumpViewerViewChangedEventArgs e)
+        {
+            System.Diagnostics.Debug.WriteLine(e.DestinationItem.Item);
         }
 
         void ItemView_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -38,7 +44,7 @@ namespace MetroFlickr
             set
             {
                 this._items = value;
-                CollectionViewSource.Source = value;
+                CollectionViewSource.Source = value;                
             }
         }
 
@@ -54,9 +60,15 @@ namespace MetroFlickr
                 _displayHandler = Page_OrientationChanged;
                 _layoutHandler = Page_LayoutChanged;
             }
-            DisplayProperties.OrientationChanged += _displayHandler;
-            ApplicationLayout.GetForCurrentView().LayoutChanged += _layoutHandler;
-            SetCurrentViewState(this);
+
+            VisualStateManager.GoToState(this, "Full", false);
+
+            (JumpViewer.JumpView as ListViewBase).ItemsSource = CollectionViewSource.View.CollectionGroups;
+            JumpViewer.IsContentViewActive = false;
+
+            //DisplayProperties.OrientationChanged += _displayHandler;
+            //ApplicationLayout.GetForCurrentView().LayoutChanged += _layoutHandler;
+            //SetCurrentViewState(this);
         }
 
         private void Page_Unloaded(object sender, RoutedEventArgs e)
@@ -89,22 +101,6 @@ namespace MetroFlickr
             if (layout == ApplicationLayoutState.Filled) return "Fill";
             if (layout == ApplicationLayoutState.Snapped) return "Snapped";
             return "Full";
-        }
-
-        private FilePickerBasket _FilePickerBasket;
-
-        public void Activate(FilePickerActivatedEventArgs args)
-        {
-            _FilePickerBasket = args.Basket;
-
-            //Task.Run(() =>
-            //{
-            //    App.FlickrDataSource.LoadAsync(this.Dispatcher);
-            //    this.Items = App.FlickrDataSource.ImageSets;
-            //});
-
-            //Window.Current.Content = this;
-            //Window.Current.Activate();
         }
     }
 }

@@ -11,6 +11,7 @@ namespace MetroFlickr
 {
     partial class App
     {
+        public static FilePickerActivatedEventArgs FilePickerArgs;
 
         public App()
         {
@@ -19,8 +20,14 @@ namespace MetroFlickr
         
         protected override void OnFilePickerActivated(FilePickerActivatedEventArgs args)
         {
-            var filePickerPage = new FilePickerPage();
-            filePickerPage.Activate(args);
+            App.FilePickerArgs = args;
+
+            var page = new MainPage();
+
+            Window.Current.Content = page;
+            Window.Current.Activate();
+
+            page.SetView(ViewType.FilePicker);
         }
 
         protected override void OnSearchActivated(SearchActivatedEventArgs args)
@@ -32,8 +39,11 @@ namespace MetroFlickr
         protected override void OnLaunched(LaunchActivatedEventArgs args)
         {            
             var page = new MainPage();
+            
             Window.Current.Content = page;
             Window.Current.Activate();
-        }
+
+            page.SetView(ViewType.Home);
+        }        
     }
 }

@@ -457,7 +457,7 @@
         <ColumnDefinition Width="*" />
       </Grid.ColumnDefinitions>
       <Button x:Name="BackButton" Style="{StaticResource BackButtonStyle}" Click="BackButton_Click" Visibility="Collapsed"/>
-      <TextBlock x:Name="PageTitle" Text="{StaticResource AppName}" Style="{StaticResource PageTitleStyle}" Grid.Column="1" />
+      <TextBlock x:Name="PageTitle" Text="{Binding Breadcrumb}" Style="{StaticResource PageTitleStyle}" Grid.Column="1" />
     </Grid>
 
     <GridView x:Name="ItemGridView" ItemsSource="{Binding Source={StaticResource CollectionViewSource}}" ItemTemplate="{StaticResource GroupedItemTemplate}" ItemContainerStyle="{StaticResource GridTileStyle}" ItemsPanel="{StaticResource GridItemsPanelTemplate}"

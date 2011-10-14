@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using MetroFlickr.Controllers;
 using MetroFlickr.Model;
+using Windows.ApplicationModel;
 using Windows.Foundation;
 using Windows.Graphics.Display;
+using Windows.Storage;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -25,7 +27,11 @@ namespace MetroFlickr
             : this()
         {
             this.NavigationController = navigationController;
-        }
+
+            //setting DataContext in code-behind as a bug exists in dev preview
+            //http://social.msdn.microsoft.com/Forums/en-US/winappswithcsharp/thread/fab270de-6a35-46f4-bbe1-4fb33dc9b5dc
+            PageTitle.DataContext = this.NavigationController;           
+         }
 
         void ItemView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -72,8 +78,11 @@ namespace MetroFlickr
                 _displayHandler = Page_OrientationChanged;
                 _layoutHandler = Page_LayoutChanged;
             }
+
+            //get a nasty COM exception when attempting to register these event handlers under the file picker view or calling SetCurrentViewState below
             DisplayProperties.OrientationChanged += _displayHandler;
             ApplicationLayout.GetForCurrentView().LayoutChanged += _layoutHandler;
+
             SetCurrentViewState(this);
         }
 

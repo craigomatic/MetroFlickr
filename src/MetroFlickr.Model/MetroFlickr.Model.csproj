@@ -33,6 +33,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Constants.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="FlickrDataSource.cs" />
     <Compile Include="FlickrImage.cs" />
     <Compile Include="FlickrImageSet.cs" />

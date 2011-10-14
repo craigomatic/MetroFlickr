@@ -21,7 +21,7 @@ namespace MetroFlickr
 
         public MainPage()
         {
-            InitializeComponent();                      
+            InitializeComponent();
         }
 
         // View state management for switching among Full, Fill, Snapped, and Portrait states
@@ -39,23 +39,32 @@ namespace MetroFlickr
             DisplayProperties.OrientationChanged += _displayHandler;
             ApplicationLayout.GetForCurrentView().LayoutChanged += _layoutHandler;
             SetCurrentOrientation(this);
+        }
 
-            SettingsPane.GetForCurrentView().ApplicationCommands.Add(new SettingsCommand(KnownSettingsCommand.Preferences, new UICommandInvokedHandler(delegate(IUICommand command)
+        private ViewType _RequestedView;
+
+        public void SetView(ViewType viewType)
+        {
+            _RequestedView = viewType;
+
+            if (_RequestedView != ViewType.FilePicker) //I don't think it's permitted to get at the settings view when in FilePicker mode, get an exception every time
             {
-                if (Window.Current.Content != this)
+                SettingsPane.GetForCurrentView().ApplicationCommands.Add(new SettingsCommand(KnownSettingsCommand.Preferences, new UICommandInvokedHandler(delegate(IUICommand command)
                 {
-                    //TODO: I get an arguement out of range exception when running this code meaning that once the options have been set they currently cannot be changed :(
+                    if (Window.Current.Content != this)
+                    {
+                        //TODO: I get an arguement out of range exception when running this code meaning that once the options have been set they currently cannot be changed :(
 
-                    //Window.Current.Content = this;
-                    //Window.Current.Activate();
-                    //SettingsView.Margin = ThicknessHelper.FromUniformLength(0);
-                    
-                }
-                else
-                {
-                    SettingsView.Margin = ThicknessHelper.FromUniformLength(0);
-                }
-            })));
+                        //Window.Current.Content = this;
+                        //Window.Current.Activate();
+                        //SettingsView.Margin = ThicknessHelper.FromUniformLength(0);
+                    }
+                    else
+                    {
+                        SettingsView.Margin = ThicknessHelper.FromUniformLength(0);
+                    }
+                })));
+            }
 
             object username = null;
             object apiKey = null;
@@ -80,7 +89,7 @@ namespace MetroFlickr
         private void _RunApp(string username, string apiKey)
         {
             _NavigationController = new NavigationController(username, apiKey);
-            _NavigationController.SetView("MetroFlickr", ViewType.Home, null, null, null);
+            _NavigationController.SetView("MetroFlickr", _RequestedView, null, null, null);
         }
 
         private void LayoutRoot_PointerPressed(object sender, Windows.UI.Xaml.Input.PointerEventArgs args)

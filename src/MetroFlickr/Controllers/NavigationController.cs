@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using MetroFlickr.Model;
 using Windows.UI.ApplicationSettings;
+using Windows.UI.Notifications;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
+using System.Linq;
 
 namespace MetroFlickr.Controllers
 {
@@ -50,6 +52,7 @@ namespace MetroFlickr.Controllers
                         Window.Current.Activate();
 
                         await this.DataSource.LoadAsync(page.Dispatcher);
+                        _UpdateTile();
                         page.Items = this.DataSource.ImageSets;
                         
                         break;
@@ -81,10 +84,60 @@ namespace MetroFlickr.Controllers
 
                         break;
                     }
+                case ViewType.FilePicker:
+                    {
+                        this.Breadcrumb = string.Empty;
+
+                        var page = new FilePickerPage();
+                        page.DataContext = this.DataSource;
+
+                        await this.DataSource.LoadAsync(page.Dispatcher);
+
+                        page.Items = this.DataSource.ImageSets;
+
+                        Window.Current.Content = page;
+                        Window.Current.Activate();
+
+                        break;
+                    }
             }
 
             this.CurrentViewType = type;
 
+        }
+
+        private void _UpdateTile()
+        {
+            var tileTitle = "MetroFlickr";
+
+            if (!string.IsNullOrWhiteSpace(this.DataSource.Username))
+            {
+                tileTitle = string.Format("{0}'s photos", this.DataSource.Username);
+            }
+
+            var template = Windows.UI.Notifications.TileUpdateManager.GetTemplateContent(Windows.UI.Notifications.TileTemplateType.TileWidePeekImageCollection01);
+            
+            var images = template.GetElementsByTagName("image");
+
+            var orderedImagesFromSource = this.DataSource.SelectAllImages().OrderBy(o => o.Date);
+
+            if (orderedImagesFromSource.Count() < images.Length)
+            {
+                template = Windows.UI.Notifications.TileUpdateManager.GetTemplateContent(Windows.UI.Notifications.TileTemplateType.TileWideImageAndText);
+            }
+
+            var imageSourceArray = orderedImagesFromSource.ToArray();
+
+            for (int i = 0; i < images.Length; i++)
+			{
+                images[i].Attributes.GetNamedItem("src").NodeValue = imageSourceArray[i].ImageUri; 
+            }
+
+            var text = template.GetElementsByTagName("text");
+            text[0].AppendChild(template.CreateTextNode(tileTitle));
+
+            var tileUpdater = TileUpdateManager.CreateTileUpdaterForApplication();
+            tileUpdater.Update(new TileNotification(template));
         }
     }
 }

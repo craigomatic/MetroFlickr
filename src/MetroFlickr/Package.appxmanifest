@@ -17,6 +17,7 @@
   <Applications>
     <Application Id="App" Executable="metroflickr.exe" EntryPoint="MetroFlickr.App">
       <VisualElements DisplayName="MetroFlickr" Logo="Images\Logo.png" SmallLogo="Images\SmallLogo.png" Description="MetroFlickr" ForegroundText="light" BackgroundColor="#222222" InitialRotationPreference="portrait">
+        <DefaultTile WideLogo="Images\WideLogo.png" />
         <SplashScreen Image="Images\SplashScreen.png" />
       </VisualElements>
       <Extensions>

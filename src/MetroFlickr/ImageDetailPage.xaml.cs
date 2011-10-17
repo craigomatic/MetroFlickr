@@ -6,11 +6,14 @@ using MetroFlickr.Model;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Graphics.Display;
+using Windows.Graphics.Printing;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
+using Windows.UI.Xaml.Media.Imaging;
+using Windows.UI.Xaml.Printing;
 
 namespace MetroFlickr
 {
@@ -19,6 +22,7 @@ namespace MetroFlickr
         public NavigationController NavigationController { get; private set; }
 
         private PropertySet _flipState = new PropertySet();
+        private PrintDocument _PrintDocument;
 
         public ImageDetailPage()
         {
@@ -38,6 +42,58 @@ namespace MetroFlickr
         void HomeButton_Click(object sender, RoutedEventArgs e)
         {
             this.NavigationController.SetView("MetroFlickr", ViewType.Home, null, null, null);
+        }
+
+        private object _DocumentSource;
+
+        void PrintButton_Click(object sender, RoutedEventArgs e)
+        {
+            _PrintDocument = new PrintDocument();
+            _DocumentSource = _PrintDocument.DocumentSource;
+            _PrintDocument.GetPreviewPage += new GetPreviewPageEventHandler(printDocument_GetPreviewPage);
+            _PrintDocument.Paginate += new PaginateEventHandler(printDocument_Paginate);
+            _PrintDocument.AddPages += new AddPagesEventHandler(printDocument_AddPages);
+
+            var printManager = PrintManager.GetForCurrentView();
+
+            try
+            {
+                printManager.PrintTaskInitializing += new TypedEventHandler<PrintManager, PrintTaskInitializingEventArgs>(printManager_PrintTaskInitializing);
+            }
+            catch { }
+
+            PrintManager.ShowPrintUI();
+        }
+
+        void printDocument_AddPages(object sender, AddPagesEventArgs e)
+        {
+            var contentPresenter = new ContentPresenter
+            {
+                Content = new Image { Source = new BitmapImage(new Uri(_CurrentImage.LargeImageUri)) }
+            };
+            
+            _PrintDocument.AddPage(contentPresenter);
+            _PrintDocument.AddPagesComplete();
+        }
+
+        void printDocument_Paginate(object sender, PaginateEventArgs e)
+        {
+            _PrintDocument.SetPreviewPageCount(1);
+        }
+
+        void printManager_PrintTaskInitializing(PrintManager sender, PrintTaskInitializingEventArgs args)
+        {
+            args.Request.InitializePrintTask(_DocumentSource, "MetroFlickr");
+        }
+
+        void printDocument_GetPreviewPage(object sender, GetPreviewPageEventArgs e)
+        {
+            var contentPresenter = new ContentPresenter
+            {
+                Content = new Image { Source = new BitmapImage(new Uri(_CurrentImage.LargeImageUri)) }
+            };
+
+            _PrintDocument.SetPreviewPage(e.PageNumber, contentPresenter);
         }
 
         void BackButton_Click(object sender, RoutedEventArgs e)
@@ -62,6 +118,8 @@ namespace MetroFlickr
             }
         }
 
+        private FlickrImage _CurrentImage;
+
         public Object Item
         {
             get
@@ -72,6 +130,11 @@ namespace MetroFlickr
             set
             {
                 FlipView.SelectedItem = value;
+
+                if (value is FlickrImage)
+                {
+                    _CurrentImage = value as FlickrImage;
+                }
             }
         }
 
@@ -82,6 +145,10 @@ namespace MetroFlickr
             _flipState["CanFlipNext"] = CanFlipNext;
             _flipState["CanFlipPrevious"] = CanFlipPrevious;
 
+            if (e.AddedItems.Count == 1 && e.AddedItems[0] is FlickrImage)
+            {
+                _CurrentImage = e.AddedItems[0] as FlickrImage;
+            }
         }
 
         bool CanFlipPrevious
@@ -137,7 +204,7 @@ namespace MetroFlickr
                 ApplicationLayout.GetForCurrentView().LayoutChanged += _layoutHandler;
             }
             viewStateAwareControls.Add(control);
-            SetCurrentViewState(control);
+            SetCurrentViewState(control);          
         }
 
         private void Page_Unloaded(object sender, RoutedEventArgs e)

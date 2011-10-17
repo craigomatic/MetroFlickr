@@ -230,6 +230,10 @@
             <Button x:Name="HomeButton" Click="HomeButton_Click" Style="{StaticResource AppBarButtonStyle}" />
             <TextBlock Text="Home" Style="{StaticResource AppBarTextStyle}"/>
           </StackPanel>
+            <StackPanel Margin="48,18,0,0" Width="72">
+            <Button x:Name="PrintButton" Click="PrintButton_Click" Style="{StaticResource AppBarButtonStyle}" />
+            <TextBlock Text="Print" Style="{StaticResource AppBarTextStyle}"/>
+          </StackPanel>
         </StackPanel>
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,48,0">
